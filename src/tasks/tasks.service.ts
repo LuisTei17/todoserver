@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
@@ -17,7 +17,7 @@ export class TasksService {
   async findByProjectId(id_project: string): Promise<Array<Task>> {
     const tasks = await this.taskModel.find({id_project}).exec();
     if (!tasks || !tasks.length)
-      throw new Error('Project without tasks');
+      throw new HttpException('Project without tasks', HttpStatus.CONFLICT);
 
     return tasks;
   }
@@ -26,7 +26,8 @@ export class TasksService {
     const updatedTask = await this.taskModel.findByIdAndUpdate(id, updateTaskDto);
 
     if (!updatedTask)
-      throw new Error('Task not found')
+      throw new HttpException('Task not found', HttpStatus.NOT_FOUND);
+
 
     return updatedTask;
   }
@@ -35,7 +36,7 @@ export class TasksService {
     const deletedTask = await this.taskModel.findByIdAndRemove(id);
 
     if (!deletedTask)
-      throw new Error('Project not found')
+      throw new HttpException('Task not found', HttpStatus.NOT_FOUND);
 
     return deletedTask;
   }

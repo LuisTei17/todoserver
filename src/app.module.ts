@@ -3,9 +3,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { ProjectModule } from './project/project.module';
 import { TasksModule } from './tasks/tasks.module';
-import 'dotenv/config'
+import { AuthModule } from './auth/auth.module';
 @Module({
-  imports: [MongooseModule.forRoot(process.env.mongo_url), UserModule, ProjectModule, TasksModule],
+  imports: [MongooseModule.forRoot(process.env.mongo_url), AuthModule, UserModule, ProjectModule, TasksModule],
   controllers: [],
   providers: [],
 })

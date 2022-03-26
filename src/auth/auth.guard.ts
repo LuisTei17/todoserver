@@ -1,21 +1,16 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
-import { Observable } from 'rxjs';
-import { JwtService } from 'src/jwt/jwt.service';
-import { User } from 'src/user/schema/user.schema';
-import { UserController } from 'src/user/user.controller';
-import { UserService } from 'src/user/user.service';
-import { AuthService } from './auth.service';
+import { Injectable, CanActivate, ExecutionContext, HttpException, HttpStatus } from '@nestjs/common';
+import { AuthService } from '../auth/auth.service';
+import { User } from '../user/schema/user.schema';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
     constructor(
-        private userService: UserService,
-        private jwtService: JwtService) {}
+        private authService: AuthService) {}
   async canActivate(
     context: ExecutionContext,
   ): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const user = await retrieveUser(request, this.jwtService);
+    const user = await retrieveUser(request, this.authService);
     if (user) {
         request.user = user;
         return true;
@@ -24,10 +19,10 @@ export class AuthGuard implements CanActivate {
   }
 }
 
-function retrieveUser(request: any, jwtService: JwtService): Promise<User> {
+function retrieveUser(request: any, authService: AuthService): Promise<User> {
     const token = request.headers.token;
     if (!token)
-        throw new Error('Token not found');
-    return jwtService.verifyToken(token);
+      throw new HttpException('Invalid password', HttpStatus.FORBIDDEN);
+    return authService.verifyToken(token);
 
 }

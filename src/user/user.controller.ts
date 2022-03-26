@@ -3,8 +3,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { LoginUserDto } from './dto/login-user.dto';
-import { AuthGuard } from 'src/auth/auth.guard';
-import { User } from './schema/user.schema';
+import { AuthGuard } from '../auth/auth.guard';
 
 @ApiTags('User')
 @Controller('user')
