@@ -14,8 +14,12 @@ export class Project {
         type: schema.Types.ObjectId,
         ref: "User"
     };  
-    @Prop()
-    finished: Boolean;
+    @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Status' }] })
+    id_status: {
+        required: true,
+        type: schema.Types.ObjectId,
+        ref: "Status"
+    };  
 }
 
 export const ProjectSchema = SchemaFactory.createForClass(Project);
