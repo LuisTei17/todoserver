@@ -7,7 +7,7 @@ export type TaskDocument = Task & Document;
 @Schema()
 export class Task {
     @Prop()
-    description: String;
+    description: string;
     @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Status' }] })
     id_status: {
         required: true,

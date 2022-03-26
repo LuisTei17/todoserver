@@ -6,10 +6,10 @@ export type StatusDocument = Status & Document;
 @Schema()
 export class Status {
     @Prop()
-    text: String;
+    text: string;
     @Prop()
     color: {
-        type: String,
+        type: string,
         required: true,
         enum: ['red', 'green', 'yellow']
     };

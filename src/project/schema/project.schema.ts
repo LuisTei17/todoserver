@@ -7,7 +7,7 @@ export type ProjectDocument = Project & Document;
 @Schema()
 export class Project {
     @Prop()
-    name: String;
+    name: string;
     @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
     id_user: {
         required: true,
