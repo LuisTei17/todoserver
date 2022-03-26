@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate {
 function retrieveUser(request: any, authService: AuthService): Promise<User> {
     const token = request.headers.token;
     if (!token)
-      throw new HttpException('Invalid password', HttpStatus.FORBIDDEN);
+      throw new HttpException('Invalid user', HttpStatus.FORBIDDEN);
     return authService.verifyToken(token);
 
 }
