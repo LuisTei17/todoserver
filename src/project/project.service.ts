@@ -19,8 +19,6 @@ export class ProjectService {
 
   async findByUserId(id_user: string): Promise<Array<Project>> {
     const projects = await this.projectModel.find({id_user}).populate('tasks').exec();
-    if (!projects || !projects.length)
-      throw new HttpException(constants.PROJECT_WITHOUT_TASKS, HttpStatus.CONFLICT);
 
     return projects;
   }
