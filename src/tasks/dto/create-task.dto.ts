@@ -14,9 +14,6 @@ export class CreateTaskDto {
     finishDate: Date;
 
     @ApiProperty()
-    id_status: string;
-
-    @ApiProperty()
     id_project: string;
 
 
