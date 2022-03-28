@@ -3,15 +3,19 @@ import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { ProjectService } from 'src/project/project.service';
+import { TaskEntity } from './entity/task.entity';
 
 @Controller('tasks')
 export class TasksController {
-  constructor(private readonly tasksService: TasksService) {}
+  constructor(private readonly tasksService: TasksService, private projectService: ProjectService) {}
 
   @Post()
   @UseGuards(AuthGuard)
-  create(@Body() createTaskDto: CreateTaskDto) {
-    return this.tasksService.create(createTaskDto);
+  async create(@Body() createTaskDto: CreateTaskDto) {
+    const task: TaskEntity = await this.tasksService.create(createTaskDto);
+    await this.projectService.insertTask(createTaskDto.id_project, task._id);
+    return task;
   }
 
   @Get(':id_project')

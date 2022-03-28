@@ -14,14 +14,11 @@ export class Task {
         type: schema.Types.ObjectId,
         ref: "Status"
     };  
-    @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Project' }] })
-    id_project: {
-        required: true,
-        type: schema.Types.ObjectId,
-        ref: "Project"
-    };  
     @Prop()
     finished: Boolean;
+    @Prop()
+    finishDate: Date;
+
 }
 
 export const TaskSchema = SchemaFactory.createForClass(Task);

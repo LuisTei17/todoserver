@@ -14,7 +14,6 @@ export class ProjectController {
   @Post()
   @UseGuards(AuthGuard)
   create(@Req() request, @Body() createProjectDto: CreateProjectDto) {
-    console.log(request.user)
     const { id } = request.user;
     return this.projectService.create(createProjectDto, id);
   }

@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { Project, ProjectDocument } from './schema/project.schema';
-
+import * as constants from '../helpers/constants.json';
 @Injectable()
 export class ProjectService {
   constructor(@InjectModel(Project.name) private projectModel: Model<ProjectDocument>) {}
@@ -18,27 +18,30 @@ export class ProjectService {
   }
 
   async findByUserId(id_user: string): Promise<Array<Project>> {
-    const projects = await this.projectModel.find({id_user}).exec();
+    const projects = await this.projectModel.find({id_user}).populate('tasks').exec();
     if (!projects || !projects.length)
-      throw new HttpException('Project without tasks', HttpStatus.CONFLICT);
+      throw new HttpException(constants.PROJECT_WITHOUT_TASKS, HttpStatus.CONFLICT);
 
     return projects;
   }
 
   async update(id: string, updateProjectDto: UpdateProjectDto): Promise<Project> {
     const updatedProject = await this.projectModel.findByIdAndUpdate(id, updateProjectDto);
-
     if (!updatedProject)
-      throw new HttpException('Project not found', HttpStatus.NOT_FOUND);
+      throw new HttpException(constants.PROJECT_NOT_FOUND, HttpStatus.NOT_FOUND);
 
     return updatedProject;
+  }
+
+  async insertTask(id_project: string, id_task: string) {
+    return this.projectModel.findByIdAndUpdate(id_project, {$push: {tasks: id_task}}).exec();
   }
 
   async remove(id: string): Promise<Project> {
     const deletedProject = await this.projectModel.findByIdAndRemove(id);
 
     if (!deletedProject)
-      throw new HttpException('Project not found', HttpStatus.NOT_FOUND);
+      throw new HttpException(constants.PROJECT_NOT_FOUND, HttpStatus.NOT_FOUND);
 
     return deletedProject;
   }

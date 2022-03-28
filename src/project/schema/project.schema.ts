@@ -14,11 +14,11 @@ export class Project {
         type: schema.Types.ObjectId,
         ref: "User"
     };  
-    @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Status' }] })
-    id_status: {
+    @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Task' }] })
+    tasks: {
         required: true,
         type: schema.Types.ObjectId,
-        ref: "Status"
+        ref: "Task"
     };  
 }
 
